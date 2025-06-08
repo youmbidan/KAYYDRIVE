@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kayydrive/Gestion_incidents/IncidentDetailPage.dart';
 import 'package:kayydrive/Gestion_incidents/consultIncident.dart'; // Nommage corrigé
 
 void main() {
@@ -11,17 +12,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Gestion des Incidents', // Titre pour l'accessibilité
       theme: ThemeData(
         colorSchemeSeed: Colors.red,
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white, // Fond blanc pour toutes les AppBars
-          iconTheme: IconThemeData(color: Colors.red), // Icônes rouges
-          actionsIconTheme: IconThemeData(color: Colors.red), // Icônes d'actions rouges
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.red),
+          actionsIconTheme: IconThemeData(color: Colors.red),
         ),
       ),
-      home: const IncidentPage(),
+      // Utilisez initialRoute et routes au lieu de home
+      initialRoute: '/',
+      // Configuration des routes
+      routes: {
+        // Route pour la page principale (déjà définie comme home)
+        '/': (context) => const IncidentPage(),
+        // Route pour les détails d'incident
+        '/incident/detail': (context) => const IncidentDetailPage(),
+        // Route pour ajouter un incident
+        //'/incident/add': (context) => const AddIncidentPage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }

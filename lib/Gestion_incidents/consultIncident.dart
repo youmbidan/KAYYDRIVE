@@ -83,9 +83,10 @@ class _IncidentPageState extends State<IncidentPage> {
             ),
             const SizedBox(height: 20),
             GestureDetector(
-              onTap: () {
-                // Action au clic
-              },
+                onTap: () {
+                  // Navigation vers les détails de l'incident
+                  Navigator.pushNamed(context, '/incident/detail');
+                },
               child: Card(
                 elevation: 8,
                 shape: RoundedRectangleBorder(
@@ -95,7 +96,7 @@ class _IncidentPageState extends State<IncidentPage> {
                 shadowColor: Colors.black.withOpacity(0.2),
                 child: SizedBox(
                   width: 400,
-                  height: 170,
+                  height: 180,
                   child: Stack(
                     children: [
                       Positioned(
