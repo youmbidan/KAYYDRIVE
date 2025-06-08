@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class IncidentPage extends StatefulWidget {
   const IncidentPage({super.key});
@@ -11,10 +12,35 @@ class _IncidentPageState extends State<IncidentPage> {
   String? _selectedItem1, _selectedItem2, _selectedItem3;
   final List<String> _items = ['Option 1', 'Option 2', 'Option 3'];
 
+  int _selectedIndex = 0;
+  bool _expanded = false;
+
+  // Boutons visibles (4 boutons en colonne)
+  final List<NavItem> _visibleItems = [
+    NavItem(icon: Icons.map, label: 'Naviguer'),
+    NavItem(icon: Icons.directions_car_filled, label: 'Itinéraire'),
+    NavItem(icon: Icons.notifications, label: 'Notification'),
+    NavItem(icon: Icons.support_agent, label: 'Assistance'),
+  ];
+
+  // Boutons cachés
+  final List<NavItem> _hiddenItems = [
+    NavItem(icon: Icons.settings, label: 'Réglages'),
+    NavItem(icon: Icons.history, label: 'Historique'),
+    NavItem(icon: Icons.favorite, label: 'Favoris'),
+    NavItem(icon: Icons.share, label: 'Partager'),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(), // Menu latéral gauche
+      drawer: const Drawer(),
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Gestion des Incidents"),
@@ -50,17 +76,15 @@ class _IncidentPageState extends State<IncidentPage> {
                 _buildCompactDropdown(
                   context,
                   value: _selectedItem3,
-                  label: 'Region',
+                  label: 'Région',
                   onChanged: (value) => setState(() => _selectedItem3 = value),
                 ),
               ],
             ),
             const SizedBox(height: 20),
-            // Ici tu peux afficher les sélections si besoin
-            // Container Carré Thématique
             GestureDetector(
               onTap: () {
-                // Action au clic sur la carte
+                // Action au clic
               },
               child: Card(
                 elevation: 8,
@@ -71,7 +95,7 @@ class _IncidentPageState extends State<IncidentPage> {
                 shadowColor: Colors.black.withOpacity(0.2),
                 child: SizedBox(
                   width: 400,
-                  height: 200,
+                  height: 170,
                   child: Stack(
                     children: [
                       Positioned(
@@ -136,13 +160,10 @@ class _IncidentPageState extends State<IncidentPage> {
                               ],
                             ),
                             SizedBox(height: 6),
-                            Text(
-                              "Rue douala 3eme",
-                              style: TextStyle(fontSize: 14),
-                            ),
+                            Text("Rue Douala 3ème", style: TextStyle(fontSize: 14)),
                             SizedBox(height: 4),
                             Text(
-                              "Collision entre deux voiture",
+                              "Collision entre deux voitures",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -150,11 +171,8 @@ class _IncidentPageState extends State<IncidentPage> {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              "Signalé par la communauté urbaine de douala 3eme.",
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.black54,
-                              ),
+                              "Signalé par la communauté urbaine de Douala 3ème.",
+                              style: TextStyle(fontSize: 13, color: Colors.black54),
                             ),
                           ],
                         ),
@@ -164,7 +182,109 @@ class _IncidentPageState extends State<IncidentPage> {
                 ),
               ),
             ),
-            // Tu peux ajouter d’autres Card ici si besoin
+          ],
+        ),
+      ),
+      bottomNavigationBar: _buildCustomBottomNav(),
+    );
+  }
+  Widget _buildCustomBottomNav() {
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      height: _expanded ? 135 : 65, // Réduction supplémentaire de 5px
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2), // Réduction verticale
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Flèche de contrôle (hauteur réduite)
+            GestureDetector(
+              onTap: () => setState(() => _expanded = !_expanded),
+              child: Center(
+                child: Container(
+                  width: 30,
+                  height: 12, // Réduit de 16 à 12
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Icon(
+                    _expanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                    color: Colors.grey.shade600,
+                    size: 12, // Réduit
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 2), // Espacement réduit
+
+            // Première ligne de boutons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _visibleItems.asMap().entries.map((entry) {
+                return _buildNavButton(entry.key, entry.value);
+              }).toList(),
+            ),
+
+            // Deuxième ligne (si étendu)
+            if (_expanded) ...[
+              const SizedBox(height: 4), // Espacement réduit
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: _hiddenItems.asMap().entries.map((entry) {
+                  return _buildNavButton(entry.key + _visibleItems.length, entry.value);
+                }).toList(),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavButton(int index, NavItem item) {
+    final isSelected = _selectedIndex == index;
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 6), // Padding réduit
+        decoration: BoxDecoration(
+          color: isSelected ? primaryColor.withOpacity(0.1) : Colors.transparent,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              item.icon,
+              color: isSelected ? primaryColor : Colors.grey.shade600,
+              size: 20, // Taille réduite
+            ),
+            const SizedBox(height: 1), // Espacement minimal
+            Text(
+              item.label,
+              style: TextStyle(
+                color: isSelected ? primaryColor : Colors.grey.shade600,
+                fontSize: 9, // Taille de police réduite
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
           ],
         ),
       ),
@@ -193,10 +313,7 @@ class _IncidentPageState extends State<IncidentPage> {
           child: DropdownButton<String>(
             isDense: true,
             value: value,
-            icon: Icon(
-              Icons.arrow_drop_down,
-              color: primaryColor,
-            ),
+            icon: Icon(Icons.arrow_drop_down, color: primaryColor),
             dropdownColor: Colors.white,
             hint: Text(
               label,
@@ -206,25 +323,27 @@ class _IncidentPageState extends State<IncidentPage> {
               ),
             ),
             items: _items
-                .map(
-                  (item) => DropdownMenuItem(
-                value: item,
-                child: Text(
-                  item,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: Colors.black87,
-                  ),
-                ),
+                .map((item) => DropdownMenuItem(
+              value: item,
+              child: Text(
+                item,
+                style: theme.textTheme.bodySmall?.copyWith(color: Colors.black87),
               ),
-            )
+            ))
                 .toList(),
             onChanged: onChanged,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: primaryColor,
-            ),
+            style: theme.textTheme.bodyMedium?.copyWith(color: primaryColor),
           ),
         ),
       ),
     );
   }
+}
+
+// Classe helper pour les items de navigation
+class NavItem {
+  final IconData icon;
+  final String label;
+
+  NavItem({required this.icon, required this.label});
 }
