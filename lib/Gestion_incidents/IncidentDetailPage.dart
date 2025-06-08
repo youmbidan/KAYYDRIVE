@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kayydrive/Gestion_incidents/composant/ImageGallery.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class IncidentDetailPage extends StatefulWidget {
   const IncidentDetailPage({super.key});
@@ -11,9 +10,7 @@ class IncidentDetailPage extends StatefulWidget {
 
 class _IncidentDetailPageState extends State<IncidentDetailPage> {
   int _selectedIndex = 0;
-  bool _expanded = false;
 
-  // Boutons visibles (4 boutons en colonne)
   final List<NavItem> _visibleItems = [
     NavItem(icon: Icons.map, label: 'Naviguer'),
     NavItem(icon: Icons.directions_car_filled, label: 'Itinéraire'),
@@ -21,7 +18,6 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
     NavItem(icon: Icons.support_agent, label: 'Assistance'),
   ];
 
-  // Boutons cachés
   final List<NavItem> _hiddenItems = [
     NavItem(icon: Icons.settings, label: 'Réglages'),
     NavItem(icon: Icons.history, label: 'Historique'),
@@ -51,9 +47,7 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
         child: ListView(
           children: [
             GestureDetector(
-              onTap: () {
-                // Action au clic
-              },
+              onTap: () {},
               child: Card(
                 elevation: 8,
                 shape: RoundedRectangleBorder(
@@ -61,199 +55,230 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
                 ),
                 color: const Color(0xFFFCE6E6),
                 shadowColor: Colors.black.withOpacity(0.2),
-                child: SizedBox(
-                  width: 400,
-                  height: 800,
-                  child: Stack(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Positioned(
-                        top: 16,
-                        left: 16,
-                        child: Container(
-                          width: 12,
-                          height: 12,
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
+                      // Étiquette "Signalé"
+                      Row(
+                        children: [
+                          const CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 6,
                           ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 12,
-                        right: 16,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFEB8A8A),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                            'Signalé',
+                          const SizedBox(width: 8),
+                          const Text(
+                            "Grave",
                             style: TextStyle(
-                              color: Colors.black,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(width: 200),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFEB8A8A),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Text(
+                              'Signalé',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+                      const Row(
+                        children: [
+                          Icon(Icons.warning, size: 20),
+                          SizedBox(width: 6),
+                          Text(
+                            "Collision entre deux vehicule",
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      const Row(
+                        children: [
+                          Icon(Icons.location_on, size: 20),
+                          SizedBox(width: 6),
+                          Text(
+                            "Rue Douala 3ème",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      const Row(
+                        children: [
+                          Icon(Icons.calendar_month, size: 20),
+                          SizedBox(width: 6),
+                          Text(
+                            "Le 15 avril 19h45",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      ImageGallery(),
+                      Row(
+                        children: [
+                          const Icon(Icons.camera_alt_outlined, size: 15),
+                          const SizedBox(width: 6),
+                          const Text(
+                            "Photo ajoutées par l'utilisateur",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        "Signalé par",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          const Text(
+                            "Nom : ",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const Text(
+                            "la communauté urbaine de Douala 3ème.",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          const Text(
+                            "Tel : ",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const Text(
+                            "+237 671639978",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 11),
+                      Container(
+                        height: 100,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF2F1ED),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      const SizedBox(height: 13),
+                      const Text(
+                        "Description",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 11),
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEB8A8A),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        constraints: const BoxConstraints(minHeight: 100),
+                        child: SingleChildScrollView(
+                          child: const Text(
+                            'Ceci est un long texte figé à l\'intérieur du conteneur. '
+                            'Il sera scrollable si son contenu dépasse la hauteur du container. '
+                            'Tu peux continuer à écrire ici autant que tu veux. '
+                            'Ce comportement est utile pour afficher des journaux, des descriptions longues, etc.',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
-                      Positioned(
-                        top: 10,
-                        left: 40,
-                        right: 16,
-                        bottom: 10,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Commentaires",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Row(
                           children: [
-                            const Text(
-                              "Grave",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            const Row(
-                              children: [
-                                Icon(Icons.warning, size: 20),
-                                SizedBox(width: 6),
-                                Text(
-                                  "Collision entre deux vehicule",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 6),
-                            const Row(
-                              children: [
-                                Icon(Icons.location_on, size: 20),
-                                SizedBox(width: 6),
-                                Text(
-                                  "Rue Douala 3ème",
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            const Row(
-                              children: [
-                                Icon(Icons.calendar_month, size: 20),
-                                SizedBox(width: 6),
-                                Text(
-                                  "Le 15 avril 19h45",
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            ImageGallery(),
-                            Row(
-                              children: [
-                                Icon(Icons.camera_alt_outlined, size: 15),
-                                SizedBox(width: 6),
-                                const Text(
-                                  "Photo ajoutees par l'utilisateur",
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            const Text(
-                              "Signalé par",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                const Text(
-                                  "Nom: ",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const Text(
-                                  "la communauté urbaine de Douala 3ème.",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                const Text(
-                                  "Tel: ",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const Text(
-                                  "+237 671639978",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 11),
-                            SizedBox(
-                              height: 100,
-                              width: 300,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFF2F1ED),
-                                  borderRadius: BorderRadius.circular(20),
+                            const Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Ajouter un commentaire...',
+                                  border: InputBorder.none,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 13),
-                            const Text(
-                              "Description",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 11),
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFEB8A8A),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              height:
-                                  100, // hauteur fixée pour permettre le scroll interne
-                              child: SingleChildScrollView(
-                                child: Text(
-                                  'Ceci est un long texte figé à l\'intérieur du conteneur. '
-                                  'Il sera scrollable si son contenu dépasse la hauteur du container. '
-                                  'Tu peux continuer à écrire ici autant que tu veux. '
-                                  'Ce comportement est utile pour afficher des journaux, des descriptions longues, etc.',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.send,
+                                color: Colors.redAccent,
                               ),
                             ),
                           ],
                         ),
+                      ),
+                      const SizedBox(height: 10),
+                      commentWidget(
+                        "Utilisateur1",
+                        "Merci pour le signalement.",
+                      ),
+                      commentWidget(
+                        "Agent de sécurité",
+                        "Un véhicule d’intervention est en route.",
+                      ),
+                      commentWidget(
+                        "Utilisateur2",
+                        "Je suis passé par là. C’est vraiment grave.",
                       ),
                     ],
                   ),
@@ -265,9 +290,37 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
       ),
     );
   }
+
+  Widget commentWidget(String auteur, String message) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.person, size: 20),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  auteur,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(message, style: const TextStyle(fontSize: 13)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-// Classe helper pour les items de navigation
 class NavItem {
   final IconData icon;
   final String label;
