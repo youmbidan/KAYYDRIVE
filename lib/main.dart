@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:kayydrive/Gestion_incidents/IncidentDetailPage.dart';
-import 'package:kayydrive/Gestion_incidents/consultIncident.dart'; // Nommage corrigé
+import 'package:kayydrive/Views/Chatbot/chat_screen.dart';
+import 'package:kayydrive/Views/Itineraire/enregistr%C3%A9.dart';
+import 'package:kayydrive/Views/Itineraire/itineraire.dart';
+import 'package:kayydrive/Views/Prediction_trafic/Prediction_trafic.dart';
+import 'package:provider/provider.dart';
+import 'package:kayydrive/Views/Composant/nav_state.dart';
+import 'package:kayydrive/Views/Gestion_incidents/IncidentDetailPage.dart';
+import 'package:kayydrive/Views/Gestion_incidents/ajoutIncident.dart';
+import 'package:kayydrive/Views/Gestion_incidents/consultIncident.dart'; // Nommage corrigé
+import 'package:kayydrive/Views/Gestion_incidents/ajoutIncident.dart';
+import 'package:kayydrive/Views/Gestion_publicite/Ajouterunepublicite.dart';
+import 'package:kayydrive/Views/Gestion_recompenses/Affichermesrecompenses.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => NavigationState(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorSchemeSeed: Colors.red,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
@@ -30,7 +45,16 @@ class MyApp extends StatelessWidget {
         // Route pour les détails d'incident
         '/incident/detail': (context) => const IncidentDetailPage(),
         // Route pour ajouter un incident
-        //'/incident/add': (context) => const AddIncidentPage(),
+        '/incident/add': (context) => const AjoutIncidentPage(),
+        // Route pour ajouter les publicites
+        '/ajouterPub': (context) => AjouterPublicitePage(),
+        // Route pour consulter les Recompenses
+        '/recompenses': (context) => Affichermesrecompenses(),
+        '/chatbot': (context) => ChatScreen(),
+        '/trafficPrediction': (context) => TrafficPredictionScreen(),
+        '/itineraire': (context) => ItineraireScreen(),
+        '/enregistre': (context) =>
+            SavedAddressesPage(), // Ajout de la nouvelle route
       },
       debugShowCheckedModeBanner: false,
     );
