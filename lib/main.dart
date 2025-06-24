@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kayydrive/Views/Chatbot/chat_screen.dart';
+import 'package:kayydrive/Views/Gestion_publicite/AdminPublicite.dart';
+import 'package:kayydrive/Views/Indication/Indication.dart';
 import 'package:kayydrive/Views/Itineraire/enregistr%C3%A9.dart';
 import 'package:kayydrive/Views/Itineraire/itineraire.dart';
+import 'package:kayydrive/Views/Notifciation/notification.dart';
 import 'package:kayydrive/Views/Prediction_trafic/Prediction_trafic.dart';
 import 'package:provider/provider.dart';
 import 'package:kayydrive/Views/Composant/nav_state.dart';
@@ -47,14 +50,15 @@ class MyApp extends StatelessWidget {
         // Route pour ajouter un incident
         '/incident/add': (context) => const AjoutIncidentPage(),
         // Route pour ajouter les publicites
-        '/ajouterPub': (context) => AjouterPublicitePage(),
+        '/administrerPub': (context) => PubliciteListingPage(),
         // Route pour consulter les Recompenses
         '/recompenses': (context) => Affichermesrecompenses(),
         '/chatbot': (context) => ChatScreen(),
         '/trafficPrediction': (context) => TrafficPredictionScreen(),
         '/itineraire': (context) => ItineraireScreen(),
-        '/enregistre': (context) =>
-            SavedAddressesPage(), // Ajout de la nouvelle route
+        '/enregistre': (context) => SavedAddressesPage(),
+        '/indication': (context) => IndicationPage(),
+        '/notification': (context) => NotificationPage(),
       },
       debugShowCheckedModeBanner: false,
     );

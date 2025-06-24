@@ -28,12 +28,13 @@ class NavigationState extends ChangeNotifier {
     final routes = {
       0: '/',
       1: '/itineraire',
-      2: '/directions',
-      3: '/notifications',
-      4: '/ajouterPub',
+      2: '/indication',
+      3: '/notification',
+      4: '/administrerPub',
       5: '/recompenses',
       6: '/chatbot',
       7: '/trafficPrediction',
+      8: '/',
     };
 
     if (routes.containsKey(index)) {

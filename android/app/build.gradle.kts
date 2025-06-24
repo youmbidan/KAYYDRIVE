@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "com.example.kayydrive"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // CORRECTION: Mise à jour de la version NDK pour résoudre les conflits avec les plugins
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
