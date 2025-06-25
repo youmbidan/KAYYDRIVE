@@ -4,6 +4,7 @@ import 'package:kayydrive/Views/Gestion_publicite/AdminPublicite.dart';
 import 'package:kayydrive/Views/Indication/Indication.dart';
 import 'package:kayydrive/Views/Itineraire/enregistr%C3%A9.dart';
 import 'package:kayydrive/Views/Itineraire/itineraire.dart';
+import 'package:kayydrive/Views/Navigation/navigation.dart';
 import 'package:kayydrive/Views/Notifciation/notification.dart';
 import 'package:kayydrive/Views/Prediction_trafic/Prediction_trafic.dart';
 import 'package:provider/provider.dart';
@@ -44,21 +45,23 @@ class MyApp extends StatelessWidget {
       // Configuration des routes
       routes: {
         // Route pour la page principale (déjà définie comme home)
-        '/': (context) => const IncidentPage(),
+        '/': (context) => NavigationPage(),
+        '//incident': (context) => const IncidentPage(),
         // Route pour les détails d'incident
         '/incident/detail': (context) => const IncidentDetailPage(),
         // Route pour ajouter un incident
         '/incident/add': (context) => const AjoutIncidentPage(),
         // Route pour ajouter les publicites
-        '/administrerPub': (context) => PubliciteListingPage(),
+        '/administrerPub': (context) => const PubliciteListingPage(),
         // Route pour consulter les Recompenses
-        '/recompenses': (context) => Affichermesrecompenses(),
+        '/recompenses': (context) => const Affichermesrecompenses(),
         '/chatbot': (context) => ChatScreen(),
         '/trafficPrediction': (context) => TrafficPredictionScreen(),
         '/itineraire': (context) => ItineraireScreen(),
         '/enregistre': (context) => SavedAddressesPage(),
         '/indication': (context) => IndicationPage(),
         '/notification': (context) => NotificationPage(),
+        '/ajouterPub': (context) => const AjouterPublicitePage(),
       },
       debugShowCheckedModeBanner: false,
     );

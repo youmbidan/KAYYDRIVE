@@ -105,7 +105,7 @@ class _PubliciteListingPageState extends State<PubliciteListingPage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           child: const Icon(Icons.add),
           onPressed: () {
-            Navigator.pushNamed(context, 'ajouterPub');
+            Navigator.pushNamed(context, '/ajouterPub');
           },
         ),
         bottomNavigationBar: CustomBottomNavigation(

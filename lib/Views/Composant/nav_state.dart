@@ -19,6 +19,7 @@ class NavigationState extends ChangeNotifier {
     NavItem(icon: Icons.card_giftcard, label: 'Recompense'),
     NavItem(icon: Icons.chat, label: 'Chatbot'),
     NavItem(icon: Icons.hub, label: 'Prediction'),
+    NavItem(icon: Icons.car_crash_outlined, label: 'Incident'),
   ];
 
   void navigate(int index, BuildContext context) {
@@ -34,7 +35,7 @@ class NavigationState extends ChangeNotifier {
       5: '/recompenses',
       6: '/chatbot',
       7: '/trafficPrediction',
-      8: '/',
+      8: '/incident',
     };
 
     if (routes.containsKey(index)) {

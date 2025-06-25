@@ -14,11 +14,12 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> {
+  final Color primaryColor = Colors.red;
   final MapController mapController = MapController();
-  LatLng start = LatLng(3.970977, 9.791324); // Point A
-  LatLng end = LatLng(3.977971, 9.793925); // Point B
-
+  LatLng start = LatLng(3.970977, 9.791324);
+  LatLng end = LatLng(3.977971, 9.793925);
   List<Marker> _markers = [];
+  final TextEditingController _typeAheadController = TextEditingController();
 
   @override
   void initState() {
@@ -37,6 +38,12 @@ class _NavigationPageState extends State<NavigationPage> {
         child: const Icon(Icons.flag, color: Colors.green),
       ),
     ];
+  }
+
+  @override
+  void dispose() {
+    _typeAheadController.dispose();
+    super.dispose();
   }
 
   Future<List<Map<String, dynamic>>> searchLocation(String query) async {
@@ -81,23 +88,28 @@ class _NavigationPageState extends State<NavigationPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.pink),
+        iconTheme: IconThemeData(color: primaryColor),
         centerTitle: true,
         title: SizedBox(
           height: 40,
           child: TypeAheadField<Map<String, dynamic>>(
-            textFieldConfiguration: TextFieldConfiguration(
-              decoration: InputDecoration(
-                hintText: "Rechercher une destination...",
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                filled: true,
-                fillColor: Colors.pink.shade50,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide: BorderSide.none,
+            controller: _typeAheadController,
+            builder: (context, controller, focusNode) {
+              return TextField(
+                controller: controller,
+                focusNode: focusNode,
+                decoration: InputDecoration(
+                  hintText: "Rechercher une destination...",
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                  filled: true,
+                  fillColor: primaryColor.withOpacity(0.1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
             suggestionsCallback: (pattern) async {
               return await searchLocation(pattern);
             },
@@ -107,19 +119,19 @@ class _NavigationPageState extends State<NavigationPage> {
                 title: Text(suggestion['display_name']),
               );
             },
-            onSuggestionSelected: (Map<String, dynamic> suggestion) {
+            onSelected: (Map<String, dynamic> suggestion) {
+              // Changé de onSuggestionSelected à onSelected
               final lat = double.parse(suggestion['lat']);
               final lon = double.parse(suggestion['lon']);
               goToPlace(lat, lon, suggestion['display_name']);
+              _typeAheadController.text = suggestion['display_name'];
             },
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle, color: Colors.pink),
-            onPressed: () {
-              // TODO: Naviguer vers le profil utilisateur
-            },
+            icon: Icon(Icons.account_circle, color: primaryColor),
+            onPressed: () {},
           ),
         ],
       ),
@@ -127,10 +139,10 @@ class _NavigationPageState extends State<NavigationPage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.pink, Colors.deepPurple],
+                  colors: [primaryColor, Colors.deepPurple],
                 ),
               ),
               child: Align(
@@ -160,7 +172,7 @@ class _NavigationPageState extends State<NavigationPage> {
       ),
       body: FlutterMap(
         mapController: mapController,
-        options: MapOptions(center: start, zoom: 13.0),
+        options: MapOptions(initialCenter: start, initialZoom: 13.0),
         children: [
           TileLayer(
             urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

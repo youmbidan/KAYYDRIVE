@@ -9,6 +9,8 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
+  final Color primaryColor = Colors.red; // Variable pour la couleur principale
+
   @override
   Widget build(BuildContext context) {
     final navState = Provider.of<NavigationState>(context);
@@ -20,27 +22,17 @@ class _NotificationPageState extends State<NotificationPage> {
           "Notifications",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        centerTitle: true, // Centre le titre
+        centerTitle: true,
         leading: IconButton(
-          icon: Icon(
-            Icons.menu,
-            color: Colors.pink,
-            size: 40,
-          ), // Icône de menu en rose
+          icon: Icon(Icons.menu, color: primaryColor, size: 40),
           onPressed: () {
-            Scaffold.of(context).openDrawer(); // Ouvre le menu Drawer
+            Scaffold.of(context).openDrawer();
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.account_circle,
-              color: Colors.pink,
-              size: 30,
-            ), // Icône de profil utilisateur
-            onPressed: () {
-              // Action sur l'icône profil (ajouter une navigation si nécessaire)
-            },
+            icon: Icon(Icons.account_circle, color: primaryColor, size: 30),
+            onPressed: () {},
           ),
         ],
       ),
@@ -49,31 +41,26 @@ class _NotificationPageState extends State<NotificationPage> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: Colors.redAccent),
+              decoration: BoxDecoration(color: primaryColor),
               child: Text(
                 "Menu",
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home, color: Colors.redAccent),
+              leading: Icon(Icons.home, color: primaryColor),
               title: Text("Accueil"),
-              onTap: () {
-                // Ajouter navigation ici
-              },
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.settings, color: Colors.redAccent),
+              leading: Icon(Icons.settings, color: primaryColor),
               title: Text("Paramètres"),
-              onTap: () {
-                // Ajouter navigation ici
-              },
+              onTap: () {},
             ),
           ],
         ),
       ),
       body: Container(
-        color: Color(0xFFF1D6D6), // Fond rose clair
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [

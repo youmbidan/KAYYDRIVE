@@ -12,12 +12,11 @@ class IndicationPage extends StatefulWidget {
 }
 
 class _IndicationPageState extends State<IndicationPage> {
+  final Color primaryColor = Colors.red; // Variable pour la couleur principale
   final mapController = MapController();
   LatLng? userPosition;
-
   bool _showFilterCircle = true;
   String _selectedFilter = 'Tous';
-
   final List<String> _filters = ['Tous', 'Boucher', 'Ouverte', 'Événements'];
 
   @override
@@ -59,10 +58,7 @@ class _IndicationPageState extends State<IndicationPage> {
 
   void _useDefaultPosition() {
     setState(() {
-      userPosition = LatLng(
-        3.970977,
-        9.791324,
-      ); // Position de secours (Yaoundé, Cameroun)
+      userPosition = LatLng(3.970977, 9.791324);
     });
   }
 
@@ -143,7 +139,7 @@ class _IndicationPageState extends State<IndicationPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(color: Colors.pink),
+              CircularProgressIndicator(color: Colors.red),
               SizedBox(height: 16),
               Text(
                 "Localisation en cours...",
@@ -165,23 +161,21 @@ class _IndicationPageState extends State<IndicationPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2,
-        title: const Text(
+        title: Text(
           "Indication",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pink),
+          style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor),
         ),
         centerTitle: true,
         leading: Builder(
           builder: (context) => IconButton(
-            icon: const Icon(Icons.menu, color: Colors.pink),
+            icon: Icon(Icons.menu, color: primaryColor),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle, color: Colors.pink),
-            onPressed: () {
-              // TODO: Navigation vers profil utilisateur
-            },
+            icon: Icon(Icons.account_circle, color: primaryColor),
+            onPressed: () {},
           ),
         ],
       ),
@@ -189,10 +183,10 @@ class _IndicationPageState extends State<IndicationPage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.pink, Colors.deepPurple],
+                  colors: [primaryColor, Colors.deepPurple],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -210,16 +204,15 @@ class _IndicationPageState extends State<IndicationPage> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.home, color: Colors.black87),
-              title: const Text("Accueil", style: TextStyle(fontSize: 16)),
+              leading: Icon(Icons.home, color: Colors.black87),
+              title: Text("Accueil", style: TextStyle(fontSize: 16)),
               onTap: () {
                 Navigator.pop(context);
-                // TODO: Navigation vers Accueil
               },
             ),
             ListTile(
-              leading: const Icon(Icons.location_on, color: Colors.black87),
-              title: const Text("Ma position", style: TextStyle(fontSize: 16)),
+              leading: Icon(Icons.location_on, color: Colors.black87),
+              title: Text("Ma position", style: TextStyle(fontSize: 16)),
               onTap: () {
                 Navigator.pop(context);
                 if (userPosition != null) {
@@ -228,20 +221,18 @@ class _IndicationPageState extends State<IndicationPage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.settings, color: Colors.black87),
-              title: const Text("Paramètres", style: TextStyle(fontSize: 16)),
+              leading: Icon(Icons.settings, color: Colors.black87),
+              title: Text("Paramètres", style: TextStyle(fontSize: 16)),
               onTap: () {
                 Navigator.pop(context);
-                // TODO: Navigation vers Paramètres
               },
             ),
-            const Divider(),
+            Divider(),
             ListTile(
-              leading: const Icon(Icons.info, color: Colors.black87),
-              title: const Text("À propos", style: TextStyle(fontSize: 16)),
+              leading: Icon(Icons.info, color: Colors.black87),
+              title: Text("À propos", style: TextStyle(fontSize: 16)),
               onTap: () {
                 Navigator.pop(context);
-                // TODO: Navigation vers À propos
               },
             ),
           ],
@@ -249,48 +240,44 @@ class _IndicationPageState extends State<IndicationPage> {
       ),
       body: Stack(
         children: [
-          FlutterMap(
-            mapController: mapController,
-            options: MapOptions(
-              // CORRECTION: 'center' devient 'initialCenter' et 'zoom' devient 'initialZoom'
-              initialCenter: userPosition!,
-              initialZoom: 14.0,
-              minZoom: 3.0,
-              maxZoom: 18.0,
-              // Permet à l'utilisateur d'interagir avec la carte
-              interactionOptions: const InteractionOptions(
-                flags: InteractiveFlag.all,
+          Container(
+            color: Colors.grey[200],
+            child: FlutterMap(
+              mapController: mapController,
+              options: MapOptions(
+                initialCenter: userPosition!,
+                initialZoom: 14.0,
+                minZoom: 3.0,
+                maxZoom: 18.0,
+                interactionOptions: const InteractionOptions(
+                  flags: InteractiveFlag.all,
+                ),
               ),
-            ),
-            children: [
-              TileLayer(
-                urlTemplate:
-                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                subdomains: const ['a', 'b', 'c'],
-                userAgentPackageName: 'com.example.kayydrive',
-                // Amélioration: Ajout d'options pour de meilleures performances
-                maxZoom: 18,
-                backgroundColor: Colors.grey[200],
-              ),
-              MarkerLayer(
-                markers: [
-                  Marker(
-                    point: userPosition!,
-                    width: 40,
-                    height: 40,
-                    // CORRECTION: 'builder' devient 'child' pour flutter_map v8.x
-                    child: const Icon(
-                      Icons.person_pin_circle,
-                      color: Colors.blue,
-                      size: 40,
+              children: [
+                TileLayer(
+                  urlTemplate:
+                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  subdomains: const ['a', 'b', 'c'],
+                  userAgentPackageName: 'com.example.kayydrive',
+                ),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: userPosition!,
+                      width: 40,
+                      height: 40,
+                      child: const Icon(
+                        Icons.person_pin_circle,
+                        color: Colors.blue,
+                        size: 40,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              PolylineLayer(polylines: _buildPolylines()),
-            ],
+                  ],
+                ),
+                PolylineLayer(polylines: _buildPolylines()),
+              ],
+            ),
           ),
-          // Cercle de filtre avec amélioration visuelle
           if (_showFilterCircle)
             Positioned(
               bottom: 110,
@@ -330,7 +317,6 @@ class _IndicationPageState extends State<IndicationPage> {
                 ),
               ),
             ),
-          // Bouton de toggle amélioré
           Positioned(
             bottom: 40,
             left: MediaQuery.of(context).size.width / 2 - 28,
@@ -348,13 +334,12 @@ class _IndicationPageState extends State<IndicationPage> {
                 duration: const Duration(milliseconds: 200),
                 child: Icon(
                   _showFilterCircle ? Icons.expand_more : Icons.expand_less,
-                  color: Colors.pink,
+                  color: primaryColor,
                   size: 28,
                 ),
               ),
             ),
           ),
-          // Bouton de recentrer sur la position
           Positioned(
             bottom: 100,
             right: 20,
@@ -367,10 +352,9 @@ class _IndicationPageState extends State<IndicationPage> {
                   mapController.move(userPosition!, 16);
                 }
               },
-              child: const Icon(Icons.my_location, color: Colors.pink),
+              child: Icon(Icons.my_location, color: primaryColor),
             ),
           ),
-          // Indicateur du filtre sélectionné
           if (_selectedFilter != 'Tous')
             Positioned(
               top: 20,
