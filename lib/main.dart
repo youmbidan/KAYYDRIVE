@@ -7,6 +7,8 @@ import 'package:kayydrive/Views/Itineraire/itineraire.dart';
 import 'package:kayydrive/Views/Navigation/navigation.dart';
 import 'package:kayydrive/Views/Notifciation/notification.dart';
 import 'package:kayydrive/Views/Prediction_trafic/Prediction_trafic.dart';
+import 'package:kayydrive/Views/identification/login.dart';
+import 'package:kayydrive/Views/identification/signin.dart';
 import 'package:provider/provider.dart';
 import 'package:kayydrive/Views/Composant/nav_state.dart';
 import 'package:kayydrive/Views/Gestion_incidents/IncidentDetailPage.dart';
@@ -62,6 +64,8 @@ class MyApp extends StatelessWidget {
         '/indication': (context) => IndicationPage(),
         '/notification': (context) => NotificationPage(),
         '/ajouterPub': (context) => const AjouterPublicitePage(),
+        '/login': (context) => const LoginScreen(),
+        '/signin': (context) => const SignUpScreen(),
       },
       debugShowCheckedModeBanner: false,
     );
