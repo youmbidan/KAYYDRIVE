@@ -3,25 +3,35 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:kayydrive/Views/Composant/nav_state.dart';
 import 'package:kayydrive/Views/Composant/custom_bottom_nav.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:kayydrive/Views/Composant/CustomDrawer.dart';
+import 'package:latlong2/latlong.dart';
 
 class Affichermesrecompenses extends StatelessWidget {
   const Affichermesrecompenses({super.key});
 
   @override
   Widget build(BuildContext context) {
-
+    final Color primaryColor =
+        Colors.red; // Variable pour la couleur principale
+    final mapController = MapController();
+    LatLng? userPosition;
     final navState = Provider.of<NavigationState>(context);
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.menu, color: Colors.black),
         title: Text('Mes Récompenses', style: TextStyle(color: Colors.black)),
         centerTitle: true,
         actions: [
-          Icon(Icons.notifications_none, color: Colors.red),
+          Icon(Icons.account_circle, color: Colors.red),
           SizedBox(width: 16),
         ],
         backgroundColor: Colors.white,
         elevation: 1,
+      ),
+      drawer: CustomDrawer(
+        primaryColor: primaryColor,
+        mapController: mapController,
+        userPosition: userPosition,
       ),
       body: ListView(
         padding: EdgeInsets.all(12),

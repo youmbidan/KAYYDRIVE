@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class ImageGallery extends StatelessWidget {
   final List<String> imageUrls = [
     'https://picsum.photos/300/200?random=1',

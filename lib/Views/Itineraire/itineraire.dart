@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:kayydrive/Views/Composant/nav_state.dart';
 import 'package:kayydrive/Views/Composant/custom_bottom_nav.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:kayydrive/Views/Composant/CustomDrawer.dart';
+import 'package:latlong2/latlong.dart';
 
 class KayyDriveApp extends StatelessWidget {
   @override
@@ -21,6 +24,9 @@ class ItineraireScreen extends StatefulWidget {
 }
 
 class _ItineraireScreenState extends State<ItineraireScreen> {
+  final Color primaryColor = Colors.red; // Variable pour la couleur principale
+  final mapController = MapController();
+  LatLng? userPosition;
   @override
   Widget build(BuildContext context) {
     final navState = Provider.of<NavigationState>(context);
@@ -29,7 +35,6 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: Icon(Icons.menu, color: Colors.black),
         title: Text(
           'Itinéraire',
           style: TextStyle(
@@ -47,6 +52,11 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
           ),
           SizedBox(width: 16),
         ],
+      ),
+      drawer: CustomDrawer(
+        primaryColor: primaryColor,
+        mapController: mapController,
+        userPosition: userPosition,
       ),
       body: Stack(
         children: [

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kayydrive/Views/Gestion_incidents/composant/ImageGallery.dart';
+import 'package:kayydrive/Views/Composant/CustomDrawer.dart';
+import 'package:provider/provider.dart';
+import 'package:kayydrive/Views/Composant/nav_state.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:kayydrive/Views/Composant/CustomDrawer.dart';
+import 'package:latlong2/latlong.dart';
 
 class IncidentDetailPage extends StatefulWidget {
   const IncidentDetailPage({super.key});
@@ -33,6 +39,11 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Color primaryColor =
+        Colors.red; // Variable pour la couleur principale
+    final mapController = MapController();
+    LatLng? userPosition;
+
     return Scaffold(
       drawer: const Drawer(),
       appBar: AppBar(

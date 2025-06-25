@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kayydrive/Views/Composant/custom_bottom_nav.dart';
 import 'package:provider/provider.dart';
 import 'package:kayydrive/Views/Composant/nav_state.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:kayydrive/Views/Composant/CustomDrawer.dart';
+import 'package:latlong2/latlong.dart';
 
 class IncidentPage extends StatefulWidget {
   const IncidentPage({super.key});
@@ -17,13 +20,14 @@ class _IncidentPageState extends State<IncidentPage> {
   @override
   Widget build(BuildContext context) {
     final navState = Provider.of<NavigationState>(context);
-
+    final Color primaryColor =
+        Colors.red; // Variable pour la couleur principale
+    final mapController = MapController();
+    LatLng? userPosition;
     return Scaffold(
-      drawer: const Drawer(),
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Gestion des Incidents"),
-        elevation: 3,
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle),
@@ -31,6 +35,11 @@ class _IncidentPageState extends State<IncidentPage> {
             onPressed: () {},
           ),
         ],
+      ),
+      drawer: CustomDrawer(
+        primaryColor: primaryColor,
+        mapController: mapController,
+        userPosition: userPosition,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),

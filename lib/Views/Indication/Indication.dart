@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:kayydrive/Views/Composant/CustomDrawer.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kayydrive/Views/Composant/custom_bottom_nav.dart';
+import 'package:kayydrive/Views/Composant/CustomDrawer.dart';
 import 'package:provider/provider.dart';
 import 'package:kayydrive/Views/Composant/nav_state.dart';
 
@@ -160,7 +162,6 @@ class _IndicationPageState extends State<IndicationPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 2,
         title: Text(
           "Indication",
           style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor),
@@ -179,71 +180,10 @@ class _IndicationPageState extends State<IndicationPage> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [primaryColor, Colors.deepPurple],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  "Menu",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home, color: Colors.black87),
-              title: Text("Accueil", style: TextStyle(fontSize: 16)),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.location_on, color: Colors.black87),
-              title: Text("Ma position", style: TextStyle(fontSize: 16)),
-              onTap: () {
-                Navigator.pop(context);
-                if (userPosition != null) {
-                  mapController.move(userPosition!, 16);
-                }
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings, color: Colors.black87),
-              title: Text("Paramètres", style: TextStyle(fontSize: 16)),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.info, color: Colors.black87),
-              title: Text("À propos", style: TextStyle(fontSize: 16)),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.account_box, color: Colors.black87),
-              title: Text("Compte", style: TextStyle(fontSize: 16)),
-              onTap: () {
-                Navigator.pushNamed(context, '/signin');
-              },
-            ),
-          ],
-        ),
+      drawer: CustomDrawer(
+        primaryColor: primaryColor,
+        mapController: mapController,
+        userPosition: userPosition,
       ),
       body: Stack(
         children: [

@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // Route pour la page principale (déjà définie comme home)
         '/': (context) => NavigationPage(),
-        '//incident': (context) => const IncidentPage(),
+        '/incident': (context) => const IncidentPage(),
         // Route pour les détails d'incident
         '/incident/detail': (context) => const IncidentDetailPage(),
         // Route pour ajouter un incident

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kayydrive/Views/Composant/custom_bottom_nav.dart';
 import 'package:provider/provider.dart';
 import 'package:kayydrive/Views/Composant/nav_state.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:kayydrive/Views/Composant/CustomDrawer.dart';
+import 'package:latlong2/latlong.dart';
 
 void main() {
   runApp(const GestionPublicitesApp());
@@ -61,6 +64,10 @@ class _PubliciteListingPageState extends State<PubliciteListingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Color primaryColor =
+        Colors.red; // Variable pour la couleur principale
+    final mapController = MapController();
+    LatLng? userPosition;
     final navState = Provider.of<NavigationState>(context);
 
     return DefaultTabController(
@@ -69,10 +76,6 @@ class _PubliciteListingPageState extends State<PubliciteListingPage> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 1,
-          leading: IconButton(
-            icon: const Icon(Icons.menu, color: Colors.black),
-            onPressed: () {},
-          ),
           title: const Text(
             'Gestion des publicités',
             style: TextStyle(color: Colors.black),
@@ -93,6 +96,11 @@ class _PubliciteListingPageState extends State<PubliciteListingPage> {
               Tab(text: 'Bannières'),
             ],
           ),
+        ),
+        drawer: CustomDrawer(
+          primaryColor: primaryColor,
+          mapController: mapController,
+          userPosition: userPosition,
         ),
         body: TabBarView(
           children: [

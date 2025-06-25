@@ -2,6 +2,9 @@ import "package:flutter/material.dart";
 import 'package:kayydrive/Views/Composant/custom_bottom_nav.dart';
 import 'package:provider/provider.dart';
 import 'package:kayydrive/Views/Composant/nav_state.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:kayydrive/Views/Composant/CustomDrawer.dart';
+import 'package:latlong2/latlong.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -13,6 +16,10 @@ class _NotificationPageState extends State<NotificationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Color primaryColor =
+        Colors.red; // Variable pour la couleur principale
+    final mapController = MapController();
+    LatLng? userPosition;
     final navState = Provider.of<NavigationState>(context);
 
     return Scaffold(
@@ -23,12 +30,6 @@ class _NotificationPageState extends State<NotificationPage> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: primaryColor, size: 40),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
         actions: [
           IconButton(
             icon: Icon(Icons.account_circle, color: primaryColor, size: 30),
@@ -36,29 +37,10 @@ class _NotificationPageState extends State<NotificationPage> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: primaryColor),
-              child: Text(
-                "Menu",
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home, color: primaryColor),
-              title: Text("Accueil"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.settings, color: primaryColor),
-              title: Text("Paramètres"),
-              onTap: () {},
-            ),
-          ],
-        ),
+      drawer: CustomDrawer(
+        primaryColor: primaryColor,
+        mapController: mapController,
+        userPosition: userPosition,
       ),
       body: Container(
         padding: EdgeInsets.all(16.0),
