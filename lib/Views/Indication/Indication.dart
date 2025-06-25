@@ -235,6 +235,13 @@ class _IndicationPageState extends State<IndicationPage> {
                 Navigator.pop(context);
               },
             ),
+            ListTile(
+              leading: Icon(Icons.account_box, color: Colors.black87),
+              title: Text("Compte", style: TextStyle(fontSize: 16)),
+              onTap: () {
+                Navigator.pushNamed(context, '/signin');
+              },
+            ),
           ],
         ),
       ),

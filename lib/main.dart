@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:kayydrive/Views/Chatbot/chat_screen.dart';
 import 'package:kayydrive/Views/Gestion_publicite/AdminPublicite.dart';
 import 'package:kayydrive/Views/Indication/Indication.dart';
@@ -20,9 +21,13 @@ import 'package:kayydrive/Views/Gestion_recompenses/Affichermesrecompenses.dart'
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => NavigationState(),
-      child: const MyApp(),
+    ProviderScope(
+      // Pour Riverpod
+      child: ChangeNotifierProvider(
+        // Pour provider
+        create: (context) => NavigationState(),
+        child: const MyApp(),
+      ),
     ),
   );
 }
