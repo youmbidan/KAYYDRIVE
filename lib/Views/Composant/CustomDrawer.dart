@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -90,7 +91,7 @@ class CustomDrawer extends StatelessWidget {
             leading: Icon(Icons.highlight_off_rounded, color: Colors.black87),
             title: Text("Quitter", style: TextStyle(fontSize: 16)),
             onTap: () {
-              //Navigator.pushNamed(context, '/login');
+              SystemNavigator.pop();
             },
           ),
         ],
