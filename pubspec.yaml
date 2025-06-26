@@ -45,6 +45,7 @@ dependencies:
   latlong2: ^0.9.1
   flutter_riverpod: ^2.6.1
   equatable: ^2.0.7
+  flutter_tts: ^4.2.3
 
 
 dev_dependencies:
