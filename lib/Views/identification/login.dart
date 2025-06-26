@@ -62,6 +62,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset:
+          false, // Empêche le redimensionnement quand le clavier apparaît
       body: Stack(
         children: [
           // Décoration haut gauche
@@ -124,160 +126,175 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           ),
 
-          // Contenu principal
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 120),
+          // Contenu principal avec SingleChildScrollView pour gérer le débordement
+          SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 120),
 
-                    // Icône utilisateur dans cercle rouge
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFE53E3E),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Icon(Icons.person, color: Colors.white, size: 30),
-                    ),
-
-                    const SizedBox(height: 50),
-
-                    // Champ Nom
-                    Container(
-                      height: 55,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFF7A7A),
-                        borderRadius: BorderRadius.circular(27.5),
-                      ),
-                      child: TextField(
-                        controller: _emailController,
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.person_outline,
-                            color: Colors.white,
-                          ),
-                          hintText: 'Nom',
-                          hintStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
-                            fontSize: 16,
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 17),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // Champ Mot de passe
-                    Container(
-                      height: 55,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFF7A7A),
-                        borderRadius: BorderRadius.circular(27.5),
-                      ),
-                      child: TextField(
-                        controller: _passwordController,
-                        obscureText: !_isPasswordVisible,
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.lock_outline,
-                            color: Colors.white,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
-                              });
-                            },
-                          ),
-                          hintText: 'Mot de passe',
-                          hintStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
-                            fontSize: 16,
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 17),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Lien "Mot de passe oublié ?"
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/forgot-password');
-                        },
-                        child: Text(
-                          'Mot de passe oublié ?',
-                          style: TextStyle(
+                        // Icône utilisateur dans cercle rouge
+                        Container(
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
                             color: Color(0xFFE53E3E),
-                            fontSize: 14,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 80,
                           ),
                         ),
-                      ),
-                    ),
 
-                    const SizedBox(height: 40),
+                        const SizedBox(height: 50),
 
-                    // Bouton Connexion
-                    SizedBox(
-                      width: double.infinity,
-                      height: 30,
-                      child: ElevatedButton(
-                        onPressed: authState.isLoading ? null : _handleLogin,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFE53E3E),
-                          shape: RoundedRectangleBorder(
+                        // Champ Nom
+                        Container(
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFF7A7A),
                             borderRadius: BorderRadius.circular(27.5),
                           ),
-                          elevation: 0,
-                        ),
-                        child: authState.isLoading
-                            ? SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2.5,
-                                ),
-                              )
-                            : Text(
-                                'Connexion',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                          child: TextField(
+                            controller: _emailController,
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.person_outline,
+                                color: Colors.white,
                               ),
-                      ),
-                    ),
+                              hintText: 'Nom',
+                              hintStyle: TextStyle(
+                                color: Colors.white.withOpacity(0.9),
+                                fontSize: 16,
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 17,
+                              ),
+                            ),
+                          ),
+                        ),
 
-                    const Spacer(),
-                  ],
+                        const SizedBox(height: 12),
+
+                        // Champ Mot de passe
+                        Container(
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFF7A7A),
+                            borderRadius: BorderRadius.circular(27.5),
+                          ),
+                          child: TextField(
+                            controller: _passwordController,
+                            obscureText: !_isPasswordVisible,
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.lock_outline,
+                                color: Colors.white,
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isPasswordVisible = !_isPasswordVisible;
+                                  });
+                                },
+                              ),
+                              hintText: 'Mot de passe',
+                              hintStyle: TextStyle(
+                                color: Colors.white.withOpacity(0.9),
+                                fontSize: 16,
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 17,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Lien "Mot de passe oublié ?"
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/forgot-password');
+                            },
+                            child: Text(
+                              'Mot de passe oublié ?',
+                              style: TextStyle(
+                                color: Color(0xFFE53E3E),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 40),
+
+                        // Bouton Connexion
+                        SizedBox(
+                          width: double.infinity,
+                          height: 55,
+                          child: ElevatedButton(
+                            onPressed: authState.isLoading
+                                ? null
+                                : _handleLogin,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFE53E3E),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(27.5),
+                              ),
+                              elevation: 0,
+                            ),
+                            child: authState.isLoading
+                                ? SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2.5,
+                                    ),
+                                  )
+                                : Text(
+                                    'Connexion',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
+                        ),
+
+                        const Spacer(),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
