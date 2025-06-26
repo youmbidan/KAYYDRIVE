@@ -7,9 +7,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:kayydrive/Views/Composant/custom_bottom_nav.dart';
 import 'package:provider/provider.dart';
 import 'package:kayydrive/Views/Composant/nav_state.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:kayydrive/Views/Composant/CustomDrawer.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:kayydrive/Services/navigation_service.dart';
 
 class NavigationPage extends StatefulWidget {
   @override
@@ -19,34 +18,38 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   final Color primaryColor = Colors.red;
   final MapController mapController = MapController();
+  final NavigationService _navigationService = NavigationService();
   LatLng start = LatLng(3.970977, 9.791324);
-  LatLng end = LatLng(3.977971, 9.793925);
+  LatLng? end;
   List<Marker> _markers = [];
+  List<Polyline> _polylines = [];
   final TextEditingController _typeAheadController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _markers = [
-      Marker(
-        point: start,
-        width: 40,
-        height: 40,
-        child: const Icon(Icons.location_on, color: Colors.red),
-      ),
-      Marker(
-        point: end,
-        width: 40,
-        height: 40,
-        child: const Icon(Icons.flag, color: Colors.green),
-      ),
-    ];
+    _updateMarkers();
   }
 
-  @override
-  void dispose() {
-    _typeAheadController.dispose();
-    super.dispose();
+  void _updateMarkers() {
+    setState(() {
+      _markers = [
+        Marker(
+          point: start,
+          width: 40,
+          height: 40,
+          child: const Icon(Icons.location_on, color: Colors.red),
+        ),
+        if (end != null)
+          Marker(
+            point: end!,
+            width: 40,
+            height: 40,
+            child: const Icon(Icons.flag, color: Colors.green),
+          ),
+      ];
+    });
   }
 
   Future<List<Map<String, dynamic>>> searchLocation(String query) async {
@@ -69,27 +72,42 @@ class _NavigationPageState extends State<NavigationPage> {
     }
   }
 
+  Future<void> _fetchRoute(LatLng destination) async {
+    setState(() => _isLoading = true);
+
+    try {
+      final points = await _navigationService.getRoute(start, destination);
+
+      setState(() {
+        _polylines = [
+          Polyline(points: points, strokeWidth: 4, color: Colors.blue),
+        ];
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur de navigation: ${e.toString()}')),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
   void goToPlace(double lat, double lon, String displayName) {
     final point = LatLng(lat, lon);
-    mapController.move(point, 15);
+
     setState(() {
-      _markers.add(
-        Marker(
-          point: point,
-          width: 40,
-          height: 40,
-          child: const Icon(Icons.place, color: Colors.purple, size: 36),
-        ),
-      );
+      end = point;
+      _updateMarkers();
+      _polylines = [];
     });
+
+    mapController.move(point, 15);
+    _fetchRoute(point);
   }
 
   @override
   Widget build(BuildContext context) {
     final navState = Provider.of<NavigationState>(context);
-    final Color primaryColor =
-        Colors.red; // Variable pour la couleur principale
-    final mapController = MapController();
     LatLng? userPosition;
 
     return Scaffold(
@@ -127,7 +145,6 @@ class _NavigationPageState extends State<NavigationPage> {
               );
             },
             onSelected: (Map<String, dynamic> suggestion) {
-              // Changé de onSuggestionSelected à onSelected
               final lat = double.parse(suggestion['lat']);
               final lon = double.parse(suggestion['lon']);
               goToPlace(lat, lon, suggestion['display_name']);
@@ -147,26 +164,44 @@ class _NavigationPageState extends State<NavigationPage> {
         mapController: mapController,
         userPosition: userPosition,
       ),
-      body: FlutterMap(
-        mapController: mapController,
-        options: MapOptions(initialCenter: start, initialZoom: 13.0),
+      body: Stack(
         children: [
-          TileLayer(
-            urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            subdomains: ['a', 'b', 'c'],
-            userAgentPackageName: 'com.example.kayy_drive',
-          ),
-          MarkerLayer(markers: _markers),
-          PolylineLayer(
-            polylines: [
-              Polyline(
-                points: [start, end],
-                strokeWidth: 4,
-                color: Colors.blue,
+          FlutterMap(
+            mapController: mapController,
+            options: MapOptions(
+              initialCenter: start,
+              initialZoom: 13.0,
+              onTap: (tapPosition, point) {
+                // Optionnel: Ajouter un marqueur au clic sur la carte
+                setState(() {
+                  end = point;
+                  _updateMarkers();
+                  _polylines = [];
+                });
+                _fetchRoute(point);
+              },
+            ),
+            children: [
+              TileLayer(
+                urlTemplate:
+                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c'],
+                userAgentPackageName: 'com.example.kayy_drive',
               ),
+              MarkerLayer(markers: _markers),
+              PolylineLayer(polylines: _polylines),
             ],
           ),
+          if (_isLoading) Center(child: CircularProgressIndicator()),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Optionnel: Recentrer sur la position de départ
+          mapController.move(start, 15);
+        },
+        backgroundColor: primaryColor,
+        child: Icon(Icons.my_location, color: Colors.white),
       ),
       bottomNavigationBar: CustomBottomNavigation(
         selectedIndex: navState.selectedIndex,
